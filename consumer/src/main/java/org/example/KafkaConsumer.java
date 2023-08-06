@@ -10,8 +10,8 @@ public class KafkaConsumer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
-  @KafkaListener(topics = "timestamp")
-  void listener(String timestamp) {
-    LOGGER.info("Received: {}", timestamp);
+  @KafkaListener(topics = "timestamp", containerFactory = "kafkaListenerContainerFactory")
+  void listener(TimestampEvent event) {
+    LOGGER.info("Received: {}", event.timestamp());
   }
 }
