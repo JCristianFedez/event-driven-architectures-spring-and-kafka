@@ -1,8 +1,6 @@
 package org.example;
 
-import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

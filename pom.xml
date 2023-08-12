@@ -24,6 +24,7 @@
     <jackson.version>2.13.0</jackson.version>
   </properties>
 
+  <!-- Configuración del parent que define la configuración base de Spring Boot -->
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
@@ -74,6 +75,7 @@
 
   <build>
     <plugins>
+      <!--   Plugin que nos permite arrancar la aplicación con maven   -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
