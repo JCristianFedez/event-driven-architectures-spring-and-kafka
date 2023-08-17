@@ -2,14 +2,12 @@ package org.example;
 
 import java.util.Map;
 
-import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
@@ -27,8 +25,7 @@ public class ConsumerConfiguration {
     );
   }
 
-  @Bean
-  public ConsumerFactory<String, TimestampEvent> consumerFactory() {
+  private ConsumerFactory<String, TimestampEvent> consumerFactory() {
     final JsonDeserializer<TimestampEvent> timestampEventDeserializer = new JsonDeserializer<>(TimestampEvent.class);
     timestampEventDeserializer.setRemoveTypeHeaders(false);
     timestampEventDeserializer.addTrustedPackages("*");
@@ -43,10 +40,5 @@ public class ConsumerConfiguration {
     return factory;
   }
 
-  @Bean
-  public NewTopic timestampTopic() {
-    return TopicBuilder.name("timestamp")
-        .build();
-  }
 
 }
