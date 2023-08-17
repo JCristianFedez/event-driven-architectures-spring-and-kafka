@@ -301,13 +301,11 @@ public class KafkaProducer {
 ```java
 import java.util.Map;
 
-import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
@@ -336,8 +334,7 @@ public class ProducerConfiguration {
    *
    * @return Fábrica de productores de Kafka.
    */
-  @Bean
-  public ProducerFactory<String, TimestampEvent> producerFactory() {
+  private ProducerFactory<String, TimestampEvent> producerFactory() {
     return new DefaultKafkaProducerFactory<>(producerConfigs());
   }
 
@@ -350,17 +347,7 @@ public class ProducerConfiguration {
   public KafkaTemplate<String, TimestampEvent> kafkaTemplate() {
     return new KafkaTemplate<>(producerFactory());
   }
-
-  /**
-   * Bean para crear un nuevo topic en Kafka utilizando TopicBuilder.
-   * Define el nombre del topic como "timestamp".
-   *
-   * @return Objeto NewTopic configurado.
-   */
-  @Bean
-  public NewTopic timestampTopic() {
-    return TopicBuilder.name("timestamp").build();
-  }
+  
 }
 ```
 
@@ -456,14 +443,12 @@ public class KafkaConsumer {
 ```java
 import java.util.Map;
 
-import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
@@ -483,8 +468,7 @@ public class ConsumerConfiguration {
   }
 
   // Creación de la fábrica de consumidores de Kafka
-  @Bean
-  public ConsumerFactory<String, TimestampEvent> consumerFactory() {
+  private ConsumerFactory<String, TimestampEvent> consumerFactory() {
     final JsonDeserializer<TimestampEvent> timestampEventDeserializer = new JsonDeserializer<>(TimestampEvent.class);
     timestampEventDeserializer.setRemoveTypeHeaders(false);
     timestampEventDeserializer.addTrustedPackages("*");
@@ -498,13 +482,6 @@ public class ConsumerConfiguration {
     final ConcurrentKafkaListenerContainerFactory<String, TimestampEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
     factory.setConsumerFactory(consumerFactory());
     return factory;
-  }
-
-  // Creación de un nuevo topic en Kafka llamado "timestamp"
-  @Bean
-  public NewTopic timestampTopic() {
-    return TopicBuilder.name("timestamp")
-        .build();
   }
 }
 
